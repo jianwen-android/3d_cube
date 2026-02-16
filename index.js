@@ -28,40 +28,11 @@ function screen(p) {
     }
 }
 
-function project({x, y, z}){
-    //performs 3d to 2d point projection
-    const d = 1 //focal distance from observer (origin) to screen
-    //this presumes that the z-axis is perpendicular to the screen
-    return {
-        x: d*x/z,
-        y: d*y/z
-    }
-}
-
-function translate_z({x, y ,z}, dz) {
-    return {
-        x,
-        y,
-        z: z + dz
-    }
-}
-
-function rotate_zx({x, y, z}, angle){
-    s = Math.sin(angle)
-    c = Math.cos(angle)
-    //applies basic rotation transformation
-    return {
-        x: x*c - z*s,
-        y,
-        z: x*s + z*c,
-    }
-}
-
 const FPS= 60  //frames per second
 const TIME = 4 //time to rotate 2pi degrees
 const dt = 1000/FPS //ms per frame
 const dx = Math.PI*2/(FPS*TIME) //rotation per frame
-const dz = 1
+const dz = 1 //change in z axis
 
 let angle = 0;
 
@@ -77,7 +48,9 @@ function line(p1, p2) {
 function frame() {
     angle += dx
     clear()
-    // for (const p of cube_points) { //draws each point
+
+    //draws each point
+    // for (const p of cube_points) { 
     //     const a = screen(project(translate_z(rotate_zx(p, angle), dz)))
     //     point(a)
     // }
@@ -89,7 +62,6 @@ function frame() {
             line(a, b)
         }
     }
-
     setTimeout(frame, dt)
 }
 setTimeout(frame, dt)
